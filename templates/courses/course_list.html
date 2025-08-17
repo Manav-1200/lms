@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Courses</h2>
+<form method="get" style="margin:1rem 0">
+  <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search by title, instructor..." />
+  <select name="difficulty">
+    <option value="">Any difficulty</option>
+    {% for key,label in courses.model.DIFFICULTY_CHOICES %}
+      <option value="{{ key }}" {% if request.GET.difficulty == key %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Search</button>
+</form>
+
+<table>
+  <thead><tr><th>Title</th><th>Instructor</th><th>Difficulty</th></tr></thead>
+  <tbody>
+    {% for c in page_obj.object_list %}
+      <tr>
+        <td>{{ c.title }}</td>
+        <td>{{ c.instructor.get_full_name|default:c.instructor.username }}</td>
+        <td>{{ c.get_difficulty_display }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="3">No courses found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div>
+  {% if page_obj.has_previous %}<a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.difficulty %}difficulty={{ request.GET.difficulty }}&{% endif %}page={{ page_obj.previous_page_number }}">Prev</a>{% endif %}
+  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  {% if page_obj.has_next %}<a href="?{% if request.GET.q %}q={{ request.GET.q }}&{% endif %}{% if request.GET.difficulty %}difficulty={{ request.GET.difficulty }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>{% endif %}
+</div>
+{% endblock %}

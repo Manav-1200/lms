@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<ul>
+  <li>Total users: <strong>{{ total_users }}</strong></li>
+  <li>Active courses: <strong>{{ active_courses }}</strong></li>
+  <li>Total enrollments: <strong>{{ total_enrollments }}</strong></li>
+</ul>
+<h3>Top Courses (by enrollments)</h3>
+<ol>
+  {% for c in top_courses %}
+    <li>{{ c.title }} — {{ c.n }}</li>
+  {% empty %}
+    <li>No data</li>
+  {% endfor %}
+</ol>
+{% endblock %}

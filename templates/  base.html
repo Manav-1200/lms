@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>LMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://unpkg.com/picnic">
+  <style>body{max-width:1060px;margin:2rem auto;padding:0 1rem}</style>
+</head>
+<body>
+  <nav>
+    <a href="/">Courses</a> |
+    <a href="/sponsors/students/">My Sponsored Students</a> |
+    <a href="/dashboards/admin/">Admin Dashboard</a> |
+    <a href="/dashboards/sponsor/">Sponsor Dashboard</a> |
+    <a href="/admin/">Django Admin</a> |
+    <a href="/api/docs/">API Docs</a>
+  </nav>
+  <hr/>
+  {% if messages %}
+    <ul>
+      {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+  {% block content %}{% endblock %}
+</body>
+</html>
