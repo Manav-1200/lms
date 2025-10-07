@@ -1,23 +1,19 @@
 from django.contrib import admin
+from .models import Sector, Subject, Course
 
-# Register your models here.
-from django.contrib import admin
-from .models import Course, Lesson, Assessment
+@admin.register(Sector)
+class SectorAdmin(admin.ModelAdmin):
+    list_display = ("name", "description")
+    search_fields = ("name",)
+
+@admin.register(Subject)
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ("name", "sector")
+    list_filter = ("sector",)
+    search_fields = ("name",)
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ("title", "instructor", "difficulty", "is_active", "created_at")
-    list_filter = ("difficulty", "is_active")
-    search_fields = ("title", "description", "instructor__username", "instructor__email")
-
-@admin.register(Lesson)
-class LessonAdmin(admin.ModelAdmin):
-    list_display = ("course", "title", "order")
-    list_filter = ("course",)
-    search_fields = ("title", "course__title")
-
-@admin.register(Assessment)
-class AssessmentAdmin(admin.ModelAdmin):
-    list_display = ("course", "title", "due_date", "max_score")
-    list_filter = ("course",)
-    search_fields = ("title", "course__title")
+    list_display = ("title", "subject", "instructor", "duration_weeks", "created_at")
+    list_filter = ("subject",)
+    search_fields = ("title", "instructor__username")

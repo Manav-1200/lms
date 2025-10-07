@@ -5,4 +5,6 @@ class AccountsConfig(AppConfig):
     name = "accounts"
 
     def ready(self):
-        from . import signals  # noqa
+        # Import signals here *only if* you have signals.py
+        # from . import signals
+        pass

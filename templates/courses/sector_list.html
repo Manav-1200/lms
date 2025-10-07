@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Sectors</h2>
+<ul>
+  {% for sector in sectors %}
+    <li>
+      <a href="{% url 'courses:subject_list' sector.id %}">{{ sector.name }}</a>
+      - {{ sector.description }}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

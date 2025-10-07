@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="tag">{{ course.get_difficulty_display }}</div>
+  <h2 style="margin:6px 0 0 0;">{{ course.title }}</h2>
+  <p style="color:#cbd5e1;">Sector: {{ course.sector.name }}</p>
+  <p>{{ course.description|default:"No description yet." }}</p>
+  <p>Instructor: {{ course.instructor.get_full_name|default:course.instructor.username|default:"—" }}</p>
+  <p>Price: {% if course.price and course.price > 0 %}${{ course.price }}{% else %}Free{% endif %}</p>
+
+  {% if user.is_authenticated and user.role == "student" %}
+    <a class="btn" href="{% url 'enrollments:enroll' course.slug %}">Enroll</a>
+  {% else %}
+    <a class="btn" href="{% url 'login' %}">Login to enroll</a>
+  {% endif %}
+</div>
+{% endblock %}

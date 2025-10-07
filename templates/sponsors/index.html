@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Sponsors</h2>
+<p>Below are unpaid enrollments. Funding flow is simplified for this project.</p>
+<table class="card">
+  <thead><tr><th>Student</th><th>Course</th><th>Status</th><th>Paid</th></tr></thead>
+  <tbody>
+  {% for e in pending %}
+    <tr>
+      <td>{{ e.student.username }}</td>
+      <td>{{ e.course.title }}</td>
+      <td>{{ e.get_status_display }}</td>
+      <td>{% if e.is_paid %}Yes{% else %}No{% endif %}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">Nothing to show.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
