@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Profile - MyLMS{% endblock %}
+
+{% block content %}
+<div class="card p-4 shadow-sm">
+  <h3>Your Profile</h3>
+  <p><strong>Username:</strong> {{ user.username }}</p>
+  <p><strong>Full name:</strong> {{ user.get_full_name }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <p><strong>Role:</strong> {{ user.role }}</p>
+  <p><small></small></p>
+</div>
+{% endblock %}

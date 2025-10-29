@@ -1,15 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import role_redirect, welcome
+from accounts import views as accounts_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", welcome, name="welcome"),
-    path("accounts/", include("accounts.urls")),
-    path("courses/", include("courses.urls")),
-    path("enrollments/", include("enrollments.urls")),
-    path("notifications/", include("notifications.urls")),
-    path("sponsors/", include("sponsors.urls")),
-    path("dashboards/", include("dashboards.urls")),
-    path("role-redirect/", role_redirect, name="role_redirect"),
+    path("", accounts_views.welcome, name="welcome"),
+    path("accounts/", include(("accounts.urls", "accounts"), namespace="accounts")),
+    path("courses/", include(("courses.urls", "courses"), namespace="courses")),
+    path("enrollments/", include(("enrollments.urls", "enrollments"), namespace="enrollments")),
+    path("notifications/", include(("notifications.urls", "notifications"), namespace="notifications")),
 ]

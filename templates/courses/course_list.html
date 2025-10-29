@@ -1,31 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Courses{% endblock %}
-{% block content %}
-<h2>Available Courses</h2>
+{% block title %}Courses - MyLMS{% endblock %}
 
-{% for sector in sectors %}
-  <div class="card my-3">
-    <div class="card-header bg-primary text-white">
-      <h4>{{ sector.name }}</h4>
-      <p>{{ sector.description }}</p>
+{% block content %}
+<h2 class="mb-4">All Courses</h2>
+
+<div class="row">
+  {% for course in courses %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ course.title }}</h5>
+          <p class="card-text text-muted">{{ course.subject.title }}</p>
+          <p class="text-muted small">Instructor: {% if course.instructor %}{{ course.instructor.username }}{% else %}TBA{% endif %}</p>
+          <p class="mt-auto"><strong>${{ course.price }}</strong></p>
+          <a class="btn btn-outline-primary mt-2" href="{% url 'courses:course_detail' course.pk %}">View</a>
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-      {% for subject in sector.subjects.all %}
-        <h5>{{ subject.name }}</h5>
-        <p>{{ subject.description }}</p>
-        <ul>
-          {% for course in subject.courses.all %}
-            <li>
-              <strong>{{ course.title }}</strong> - {{ course.description|truncatewords:20 }}
-            </li>
-          {% empty %}
-            <li>No courses under this subject yet.</li>
-          {% endfor %}
-        </ul>
-      {% endfor %}
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">No courses available - add some in the admin.</div>
     </div>
-  </div>
-{% empty %}
-  <p>No sectors or courses available yet.</p>
-{% endfor %}
+  {% endfor %}
+</div>
 {% endblock %}
