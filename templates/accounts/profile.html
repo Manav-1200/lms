@@ -1,13 +1,43 @@
 {% extends "base.html" %}
-{% block title %}Profile - MyLMS{% endblock %}
-
+{% block title %}Profile{% endblock %}
 {% block content %}
-<div class="card p-4 shadow-sm">
-  <h3>Your Profile</h3>
-  <p><strong>Username:</strong> {{ user.username }}</p>
-  <p><strong>Full name:</strong> {{ user.get_full_name }}</p>
-  <p><strong>Email:</strong> {{ user.email }}</p>
-  <p><strong>Role:</strong> {{ user.role }}</p>
-  <p><small></small></p>
+<div class="container mt-5">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h3 class="card-title">Your Profile</h3>
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Full name:</strong> {{ user.full_name|default:"Not provided" }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Role:</strong> {{ user.get_role_display }}</p>
+      <hr>
+
+      {% if is_admin %}
+      <h5>Admin Panel</h5>
+      <p>As an admin, you can manage users, courses, and site settings.</p>
+      <a href="/admin/" class="btn btn-primary btn-sm">Go to Django Admin</a>
+      <a href="/courses/add/" class="btn btn-success btn-sm">Add New Course</a>
+      <a href="/accounts/manage-users/" class="btn btn-secondary btn-sm">Manage Users</a>
+      <hr>
+      {% endif %}
+
+      {% if is_instructor %}
+      <h5>Instructor Tools</h5>
+      <p>You can create and manage your own courses and view enrolled students.</p>
+      <a href="/courses/my-courses/" class="btn btn-info btn-sm">My Courses</a>
+      <a href="/courses/add/" class="btn btn-success btn-sm">Add Course</a>
+      <hr>
+      {% endif %}
+
+      {% if is_student %}
+      <h5>Student Dashboard</h5>
+      <p>View your enrolled courses and progress below.</p>
+      <a href="/courses/" class="btn btn-primary btn-sm">Browse Courses</a>
+      <a href="/enrollments/" class="btn btn-info btn-sm">My Enrollments</a>
+      <hr>
+      {% endif %}
+
+      <p class="text-muted">This is your profile page. You can expand or customize it later.</p>
+    </div>
+  </div>
 </div>
 {% endblock %}
