@@ -1,16 +1,21 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
-# extended user model so you can assign roles.
-class CustomUser(AbstractUser):
+class User(AbstractUser):
     ROLE_CHOICES = [
-        ("student", "Student"),
-        ("teacher", "Teacher"),
-        ("sponsor", "Sponsor"),
+        ('admin', 'Admin'),
+        ('instructor', 'Instructor'),
+        ('student', 'Student'),
     ]
-    # role field to identify users
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="student", help_text="Role of the user")
+
+    full_name = models.CharField(max_length=100, blank=True, null=True)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
+
+    def save(self, *args, **kwargs):
+        # Automatically make superusers Admin
+        if self.is_superuser:
+            self.role = 'admin'
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        # Show role for readability in admin lists
-        return f"{self.username} ({self.role})"
+        return self.username
