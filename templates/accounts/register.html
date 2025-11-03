@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8">
+    <div class="card p-4">
+      <h3>Create Account</h3>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="mb-3">
+          {{ form.username.label_tag }}<br>
+          {{ form.username }}
+          {{ form.username.errors }}
+        </div>
+        <div class="mb-3">
+          {{ form.email.label_tag }}<br>
+          {{ form.email }}
+          {{ form.email.errors }}
+        </div>
+        <div class="mb-3">
+          {{ form.full_name.label_tag }}<br>
+          {{ form.full_name }}
+        </div>
+        <div class="mb-3">
+          {{ form.role.label_tag }}<br>
+          {{ form.role }}
+        </div>
+        <div class="mb-3">
+          {{ form.password1.label_tag }}<br>
+          {{ form.password1 }}
+          {{ form.password1.errors }}
+        </div>
+        <div class="mb-3">
+          {{ form.password2.label_tag }}<br>
+          {{ form.password2 }}
+          {{ form.password2.errors }}
+        </div>
+        <div>
+          <button class="btn btn-success" type="submit">Create account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

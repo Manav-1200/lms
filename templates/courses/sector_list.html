@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+{% block title %}Sectors{% endblock %}
 {% block content %}
 <h2>Sectors</h2>
-<ul>
+<div class="row">
   {% for sector in sectors %}
-    <li>
-      <a href="{% url 'courses:subject_list' sector.id %}">{{ sector.name }}</a>
-      - {{ sector.description }}
-    </li>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100 p-3">
+        <h5>{{ sector.name }}</h5>
+        <p class="text-muted">{{ sector.description|truncatewords:25 }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">No sectors available yet.</div>
+    </div>
   {% endfor %}
-</ul>
+</div>
 {% endblock %}

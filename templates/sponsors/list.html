@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Sponsorships{% endblock %}
+{% block content %}
+<h3>Your Sponsorships</h3>
+{% for s in items %}
+  <div class="card p-3 mb-2">
+    <p><strong>Student:</strong> {{ s.student.username }}</p>
+    <p><strong>Course:</strong> {{ s.course.title }}</p>
+    <p><strong>Amount:</strong> ${{ s.amount }}</p>
+  </div>
+{% empty %}
+  <div class="alert alert-info">No sponsorships found.</div>
+{% endfor %}
+{% endblock %}

@@ -10,18 +10,20 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('courses', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Notification',
+            name='Sponsorship',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('message', models.TextField()),
+                ('amount', models.DecimalField(decimal_places=2, max_digits=8)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('read', models.BooleanField(default=False)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='notifications', to=settings.AUTH_USER_MODEL)),
+                ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='courses.course')),
+                ('sponsor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sponsorships', to=settings.AUTH_USER_MODEL)),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sponsored_by', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

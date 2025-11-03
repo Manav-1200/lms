@@ -3,6 +3,5 @@ from .models import Sponsorship
 
 @admin.register(Sponsorship)
 class SponsorshipAdmin(admin.ModelAdmin):
-    list_display = ("sponsor", "course", "amount", "created_at")
-    list_filter = ("course",)
-    search_fields = ("sponsor__username", "course__title")
+    list_display = ("sponsor", "student", "course", "amount", "created_at")
+    search_fields = ("sponsor__username", "student__username", "course__title")

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="py-4">
+  <h2 class="mb-3">Dashboard</h2>
+  <p class="text-muted">Welcome back, {{ user.username }} — here is a quick overview.</p>
+
+  <div class="row mt-4">
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-secondary">Enrolled Courses</h6>
+        <p class="display-6">{{ enrolled_count }}</p>
+        <small class="text-muted">Courses you are currently enrolled in.</small>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-secondary">Available Courses</h6>
+        <p class="display-6">{{ total_courses }}</p>
+        <small class="text-muted">Total courses in the system.</small>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card p-3 h-100">
+        <h6 class="text-secondary">Notifications</h6>
+        <p class="display-6">{{ notifications_count }}</p>
+        <small class="text-muted">Unread notifications for you.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h5>Quick links</h5>
+    <div class="list-group">
+      {% if is_student %}
+        <a href="{% url 'courses:course_list' %}" class="list-group-item list-group-item-action">Browse Courses</a>
+        <a href="{% url 'notifications:list' %}" class="list-group-item list-group-item-action">My Notifications</a>
+      {% endif %}
+      {% if is_instructor %}
+        <a href="{% url 'courses:course_list' %}" class="list-group-item list-group-item-action">My Courses</a>
+      {% endif %}
+      {% if is_admin %}
+        <a href="/admin/" class="list-group-item list-group-item-action">Django Admin</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

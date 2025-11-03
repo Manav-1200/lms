@@ -4,9 +4,11 @@ from enrollments.models import Enrollment
 from .utils import create_notification_for_user
 
 @receiver(post_save, sender=Enrollment)
-def enrollment_created(sender, instance, created, **kwargs):
-    # When a new enrollment is created it send a notification
+def send_enrollment_notification(sender, instance, created, **kwargs):
+    # When new enrollment is created, send notification
     if created:
-        user = instance.student
-        course_title = instance.course.title
-        create_notification_for_user(user, f"You are now enrolled in {course_title}.")
+        try:
+            create_notification_for_user(instance.student, f"You were enrolled in {instance.course.title}.")
+        except Exception:
+            # avoid raising in signal
+            pass

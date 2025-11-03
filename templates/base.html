@@ -1,51 +1,58 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}My LMS{% endblock %}</title>
+  <title>{% block title %}MyLMS{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap CDN (quick) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body { background: #f7f8fa; font-family: Arial, Helvetica, sans-serif; }
-    .card { border-radius: 6px; }
-  </style>
+  <!-- Bootstrap CDN for quick styling -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- small custom css -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'welcome' %}">MyLMS</a>
-      <div class="collapse navbar-collapse">
+      <a class="navbar-brand" href="{% url 'accounts:welcome' %}">MyLMS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample" aria-controls="navbarsExample" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExample">
         <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'courses:sector_list' %}">Sectors</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'courses:course_list' %}">Courses</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'notifications:list' %}">Notifications</a></li>
+
           {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{% url 'notifications:list' %}">Notifications</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">Register</a></li>
           {% endif %}
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container mt-5">
+  <div class="container mt-4">
     {% if messages %}
-      <div class="mb-3">
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      </div>
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
     {% endif %}
 
     {% block content %}{% endblock %}
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="bg-light text-center py-3 mt-5">
+    <div class="container">
+      <small>MyLMS — simple beginner project</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

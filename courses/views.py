@@ -1,20 +1,27 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Course, Subject, Sector, Assignment
+from .models import Sector, Subject, Course
 from enrollments.models import Enrollment
-from django.contrib import messages
+
+def sector_list(request):
+    
+    # Show all sectors publicly. Anyone can view sectors.
+   
+    sectors = Sector.objects.all().order_by("name")
+    return render(request, "courses/sector_list.html", {"sectors": sectors})
 
 @login_required
 def course_list(request):
-    # show all courses with basic related fields to look simple but clear
-    courses = Course.objects.select_related("subject", "instructor").all()
+    
+    # show latest courses first for nicer UI
+    courses = Course.objects.select_related("subject", "instructor").order_by("-created_at")
     return render(request, "courses/course_list.html", {"courses": courses})
 
 @login_required
 def course_detail(request, pk):
+    
+    # Show a single course detail. Indicate if the user is enrolled.
+    
     course = get_object_or_404(Course, pk=pk)
-    # check enrollment status
-    enrolled = Enrollment.objects.filter(student=request.user, course=course).exists()
-    # show assignments to enrolled students and instructors
-    assignments = Assignment.objects.filter(course=course).order_by("-created_at")
-    return render(request, "courses/course_detail.html", {"course": course, "enrolled": enrolled, "assignments": assignments})
+    enrolled = Enrollment.objects.filter(course=course, student=request.user).exists()
+    return render(request, "courses/course_detail.html", {"course": course, "enrolled": enrolled})

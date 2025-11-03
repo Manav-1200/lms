@@ -1,26 +1,20 @@
 {% extends "base.html" %}
-{% block title %}Courses - MyLMS{% endblock %}
-
+{% block title %}Courses{% endblock %}
 {% block content %}
-<h2 class="mb-4">All Courses</h2>
-
+<h2>All Courses</h2>
 <div class="row">
   {% for course in courses %}
-    <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">{{ course.title }}</h5>
-          <p class="card-text text-muted">{{ course.subject.title }}</p>
-          <p class="text-muted small">Instructor: {% if course.instructor %}{{ course.instructor.username }}{% else %}TBA{% endif %}</p>
-          <p class="mt-auto"><strong>${{ course.price }}</strong></p>
-          <a class="btn btn-outline-primary mt-2" href="{% url 'courses:course_detail' course.pk %}">View</a>
-        </div>
-      </div>
+  <div class="col-md-4 mb-3">
+    <div class="card h-100 p-3">
+      <h5>{{ course.title }}</h5>
+      <p class="mb-1">{{ course.subject.title }}</p>
+      <p class="text-muted">{{ course.description|truncatewords:20 }}</p>
+      <p><strong>Price:</strong> ${{ course.price }}</p>
+      <a class="btn btn-outline-primary" href="{% url 'courses:course_detail' course.pk %}">View</a>
     </div>
+  </div>
   {% empty %}
-    <div class="col-12">
-      <div class="alert alert-info">No courses available - add some in the admin.</div>
-    </div>
+    <div class="col-12"><div class="alert alert-info">No courses found.</div></div>
   {% endfor %}
 </div>
 {% endblock %}

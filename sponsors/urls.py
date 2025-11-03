@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import sponsor_dashboard
+from . import views
 
 app_name = "sponsors"
 
 urlpatterns = [
-    path("dashboard/", sponsor_dashboard, name="dashboard"),
+    # simple placeholder; no elaborate payment integration here
+    path("", views.sponsor_list, name="list"),
 ]

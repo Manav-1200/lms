@@ -3,10 +3,11 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
 class CustomUserAdmin(UserAdmin):
-    # add role to admin display and to some forms
-    list_display = ("username", "email", "first_name", "last_name", "role", "is_staff")
+    list_display = ("username", "email", "role", "is_staff", "is_superuser")
     list_filter = ("role", "is_staff", "is_superuser")
-    # keep default UserAdmin fieldsets and add our role field
-    fieldsets = UserAdmin.fieldsets + (("Extra fields", {"fields": ("role",)}),)
+    # add role to fieldsets so admin can set role
+    fieldsets = UserAdmin.fieldsets + (
+        ("Role & extra", {"fields": ("role", "full_name")}),
+    )
 
 admin.site.register(CustomUser, CustomUserAdmin)
