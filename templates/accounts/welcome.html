@@ -1,17 +1,110 @@
 {% extends "base.html" %}
-{% block title %}Welcome to MyLMS{% endblock %}
+{% block title %}Welcome to Lms{% endblock %}
 {% block content %}
+
 <div class="text-center my-5">
-  <h1>Welcome to MyLMS</h1>
-  <p class="lead">Sectors, subjects, and courses — Login to explore and learn.</p>
-  <div class="mt-3">
-    {% if user.is_authenticated %}
-      <a class="btn btn-success" href="{% url 'accounts:profile' %}">Go to Profile</a>
-      <a class="btn btn-outline-danger" href="{% url 'accounts:logout' %}">Logout</a>
-    {% else %}
-      <a class="btn btn-primary" href="{% url 'accounts:login' %}">Login</a>
-      <a class="btn btn-outline-primary" href="{% url 'accounts:register' %}">Register</a>
-    {% endif %}
-  </div>
+  <h1 class="fw-bold">Welcome to Lms</h1>
+  <p class="lead">
+    Explore different sectors, browse our demo courses, and start your learning journey today!
+  </p>
+
+  {% if not user.is_authenticated %}
+  <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-lg mx-2">Login</a>
+  <a href="{% url 'accounts:register' %}" class="btn btn-outline-primary btn-lg mx-2">Register</a>
+  {% else %}
+  <a href="{% url 'accounts:dashboard' %}" class="btn btn-success btn-lg mx-2">Go to Dashboard</a>
+  {% endif %}
 </div>
+
+<hr class="my-5">
+
+<!-- ========================= -->
+<!-- SECTORS SECTION -->
+<!-- ========================= -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Popular Sectors</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Information Technology</h5>
+          <p class="card-text small text-muted">
+            Learn programming, system design, and networking essentials.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Business & Management</h5>
+          <p class="card-text small text-muted">
+            Develop leadership and project management skills for real-world success.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm border-0">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Arts & Design</h5>
+          <p class="card-text small text-muted">
+            Explore creative concepts, visual storytelling, and digital design.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="my-5">
+
+<!-- ========================= -->
+<!-- COURSES SECTION -->
+<!-- ========================= -->
+<section class="container my-5">
+  <h2 class="text-center mb-4">Featured Courses</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow border-0">
+        <div class="card-body">
+          <h5 class="card-title">Intro to Python</h5>
+          <p class="card-text text-muted small">
+            A beginner-friendly introduction to Python programming — no prior experience required.
+          </p>
+          <p class="fw-bold text-success mb-0">$49.99</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow border-0">
+        <div class="card-body">
+          <h5 class="card-title">Marketing Essentials</h5>
+          <p class="card-text text-muted small">
+            Learn how to build brand awareness and grow a business in a digital world.
+          </p>
+          <p class="fw-bold text-success mb-0">$59.99</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow border-0">
+        <div class="card-body">
+          <h5 class="card-title">Graphic Design Fundamentals</h5>
+          <p class="card-text text-muted small">
+            Explore colors, typography, and layout to create eye-catching designs.
+          </p>
+          <p class="fw-bold text-success mb-0">$39.99</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="my-5">
+
+<footer class="text-center text-muted small py-3">
+  <p class="mb-0">MyLMS — A beginner-friendly learning platform example project.</p>
+</footer>
+
 {% endblock %}
