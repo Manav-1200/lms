@@ -3,7 +3,7 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "replace-this-with-a-better-secret-for-production"
+SECRET_KEY = "asdfafas"
 
 DEBUG = True
 

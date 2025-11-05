@@ -3,8 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_protect
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
-
 
 User = get_user_model()
 
@@ -14,7 +14,6 @@ def welcome(request):
 
 
 def register_view(request):
-   
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -30,15 +29,27 @@ def register_view(request):
     return render(request, "accounts/register.html", {"form": form})
 
 
+@csrf_protect
 def login_view(request):
-    
     if request.method == "POST":
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
             messages.success(request, f"Welcome back, {user.username}!")
-            return redirect("accounts:dashboard")
+
+            # Redirect to the correct dashboard based on role
+            role = getattr(user, "role", None) or ("admin" if user.is_superuser else "student")
+            if role == "admin":
+                return redirect("dashboards:admin_dashboard")
+            elif role == "instructor":
+                return redirect("dashboards:instructor_dashboard")
+            elif role == "student":
+                return redirect("dashboards:student_dashboard")
+            elif role == "sponsor":
+                return redirect("dashboards:sponsor_dashboard")
+            else:
+                return redirect("accounts:welcome")
         else:
             messages.error(request, "Invalid username or password.")
     else:
@@ -48,9 +59,7 @@ def login_view(request):
 
 @login_required
 def logout_view(request):
-   
     # Logs out the user and redirects to the home (welcome) page.
-    
     logout(request)
     messages.info(request, "You have been logged out successfully.")
     return redirect("welcome")
@@ -58,22 +67,17 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-   
     # Displays simple profile info for the logged-in user.
-    
     return render(request, "accounts/profile.html", {"user": request.user})
 
 
 @login_required
 def dashboard(request):
-    
     # Dashboard view for logged-in users. Displays basic information like enrolled courses, notifications, etc.
     # The role is also shown.
-    
     user = request.user
     role = getattr(user, "role", None) or ("admin" if user.is_superuser else "student")
 
-   
     enrolled_count = 0
     total_courses = 0
     notifications_count = 0
@@ -85,7 +89,6 @@ def dashboard(request):
     except Exception:
         Enrollment, Course, Notification = None, None, None
 
-    
     try:
         if Enrollment:
             enrolled_count = Enrollment.objects.filter(student=user).count()
@@ -94,7 +97,7 @@ def dashboard(request):
         if Notification:
             notifications_count = Notification.objects.filter(user=user, read=False).count()
     except Exception:
-        pass  
+        pass  # safely ignore errors
 
     context = {
         "user": user,
